@@ -1,0 +1,6 @@
+flask
+flask-cors
+flask-session
+requests
+pymongo
+google-cloud-aiplatform
