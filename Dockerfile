@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 8000
 
 # Run the Flask app
-CMD ["python", "whatsappfor1.8release.py"]
+CMD ["python", "whatsappfor18release.py"]

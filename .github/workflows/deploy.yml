@@ -1,4 +1,4 @@
-name: Deploy Gemini25Pro App
+name: Deploy whatsappfor18release App
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          IMAGE_NAME=ghcr.io/global-value-web/whatsappfor1.8release-app:latest
+          IMAGE_NAME=ghcr.io/global-value-web/whatsappfor18release-app:latest
           docker build -t $IMAGE_NAME .
           docker push $IMAGE_NAME
 
@@ -35,9 +35,9 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASS }}
           script: |
-            IMAGE_NAME=ghcr.io/global-value-web/whatsappfor1.8release-app:latest
+            IMAGE_NAME=ghcr.io/global-value-web/whatsappfor18release-app:latest
             docker login ghcr.io -u Global-Value-Web -p ${{ secrets.PAT }}
             docker pull $IMAGE_NAME
-            docker stop whatsappfor1.8release-app || true
-            docker rm whatsappfor1.8release-app || true
-            docker run -d --restart=always -p 8000:8000 --name whatsappfor1.8release-app $IMAGE_NAME
+            docker stop whatsappfor18release-app || true
+            docker rm whatsappfor18release-app || true
+            docker run -d --restart=always -p 8000:8000 --name whatsappfor18release-app $IMAGE_NAME
