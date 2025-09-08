@@ -19,7 +19,7 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
-      - name: Log in to GitHub Container Registry
+      - name: Log in to GitHub Container Registry (CI)
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Build and push Docker image
@@ -36,7 +36,7 @@ jobs:
           password: ${{ secrets.SERVER_PASS }}
           script: |
             IMAGE_NAME=ghcr.io/global-value-web/whatsappfor18release-app:latest
-            docker login ghcr.io -u Global-Value-Web -p ${{ secrets.PAT }}
+            echo "${{ secrets.PAT }}" | docker login ghcr.io -u Global-Value-Web --password-stdin
             docker pull $IMAGE_NAME
             docker stop whatsappfor18release-app || true
             docker rm whatsappfor18release-app || true
