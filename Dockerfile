@@ -1,20 +1,30 @@
-# Use official Python 3.13 slim image
-FROM python:3.13.7-slim
+# Use official lightweight Python image
+FROM python:3.10-slim
 
-# Set working directory
+# Set working directory inside container
 WORKDIR /app
 
-# Copy requirements first (better caching)
+# Prevent Python from writing .pyc files and buffering stdout
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first (to leverage Docker cache)
 COPY requirements.txt .
 
-# Install dependencies
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the code
+# Copy your entire project into the container
 COPY . .
 
-# Expose the Flask port
+# Expose Flask port
 EXPOSE 8000
 
-# Run the Flask app
+# Run your app
 CMD ["python", "whatsappfor18release.py"]
