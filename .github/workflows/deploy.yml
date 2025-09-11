@@ -1,8 +1,8 @@
-name: Deploy whatsappfor18release App
+name: Deploy Flask App
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main" ]  # deploy only after merge
 
 permissions:
   contents: read
@@ -19,12 +19,12 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
-      - name: Log in to GitHub Container Registry (CI)
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u Global-Value-Web --password-stdin
 
       - name: Build and push Docker image
         run: |
-          IMAGE_NAME=ghcr.io/global-value-web/whatsappfor18release-app:latest
+          IMAGE_NAME=ghcr.io/global-value-web/patientsafe_app:latest
           docker build -t $IMAGE_NAME .
           docker push $IMAGE_NAME
 
@@ -35,26 +35,8 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASS }}
           script: |
-            set -e
-            IMAGE_NAME=ghcr.io/global-value-web/whatsappfor18release-app:latest
-
-            echo "${{ secrets.PAT }}" | docker login ghcr.io -u Global-Value-Web --password-stdin
+            IMAGE_NAME=ghcr.io/global-value-web/patientsafe_app:latest
             docker pull $IMAGE_NAME
-
-            echo "🛑 Cleaning up old containers..."
-            docker rm -f whatsappfor18release-app || true
-
-            echo "🚀 Starting new container..."
-            docker run -d --restart=always -p 8000:8000 --name=whatsappfor18release-app $IMAGE_NAME
-
-            echo "🔍 Verifying container name..."
-            if ! docker ps --format '{{.Names}}' | grep -q '^whatsappfor18release-app$'; then
-              echo "❌ Deployment failed: Container not running with expected name"
-              docker ps -a
-              exit 1
-            fi
-
-            echo "✅ Container deployed successfully: whatsappfor18release-app"
-
-            echo "📜 Showing last 20 log lines..."
-            docker logs --tail 20 whatsappfor18release-app
+            docker stop patientsafe_app || true
+            docker rm patientsafe_app || true
+            docker run -d --restart=always -p 8000:8000 --name patientsafe_app $IMAGE_NAME
