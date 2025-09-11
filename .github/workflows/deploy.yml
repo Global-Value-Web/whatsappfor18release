@@ -24,7 +24,7 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          IMAGE_NAME=ghcr.io/global-value-web/patientsafeW_app:latest
+          IMAGE_NAME=ghcr.io/global-value-web/patientsafew_app:latest
           docker build -t $IMAGE_NAME .
           docker push $IMAGE_NAME
 
@@ -35,8 +35,8 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASS }}
           script: |
-            IMAGE_NAME=ghcr.io/global-value-web/patientsafeW_app:latest
+            IMAGE_NAME=ghcr.io/global-value-web/patientsafew_app:latest
             docker pull $IMAGE_NAME
-            docker stop patientsafeW_app || true
-            docker rm patientsafeW_app || true
-            docker run -d --restart=always -p 8000:8000 --name patientsafeW_app $IMAGE_NAME
+            docker stop patientsafew_app || true
+            docker rm patientsafew_app || true
+            docker run -d --restart=always -p 8000:8000 --name patientsafew_app $IMAGE_NAME
