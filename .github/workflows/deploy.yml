@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Windows, X64]   # 👈 use your runner
 
     steps:
       - name: Checkout code
@@ -24,19 +24,14 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          IMAGE_NAME=ghcr.io/global-value-web/whatsappfor18release_app:latest
+          $IMAGE_NAME="ghcr.io/global-value-web/whatsappfor18release_app:latest"
           docker build -t $IMAGE_NAME .
           docker push $IMAGE_NAME
 
-      - name: Deploy on server
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          password: ${{ secrets.SERVER_PASS }}
-          script: |
-            IMAGE_NAME=ghcr.io/global-value-web/whatsappfor18release_app:latest
-            docker pull $IMAGE_NAME
-            docker stop whatsappfor18release_app || true
-            docker rm whatsappfor18release_app || true
-            docker run -d --restart=always -p 8000:8000 --name whatsappfor18release_app $IMAGE_NAME
+      - name: Deploy on same server
+        run: |
+          $IMAGE_NAME="ghcr.io/global-value-web/whatsappfor18release_app:latest"
+          docker pull $IMAGE_NAME
+          docker stop whatsappfor18release_app || echo "No container to stop"
+          docker rm whatsappfor18release_app || echo "No container to remove"
+          docker run -d --restart=always -p 8000:8000 --name whatsappfor18release_app $IMAGE_NAME
