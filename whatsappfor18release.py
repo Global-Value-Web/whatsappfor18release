@@ -50,7 +50,7 @@ SESSION_TIMEOUT_MINUTES = 1
 
 languages = {
     'en': {
-        'select_language': "Please select your language First",
+        'select_language': "Please select your language",
         'language_selected': "Thanks for reaching out to PatientSafe!",
         'select_inquiry_type': "Please select an option to proceed",
         'share_feedback': "How would you like to share your product experience?",
