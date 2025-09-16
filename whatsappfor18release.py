@@ -37,6 +37,7 @@ app.config['SESSION_PERMANENT'] = False
 app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
 
+#mongo DB access
 MONGO_URI = "mongodb://192.168.1.100:27017/"
 client = MongoClient(MONGO_URI)
 db = client['PatientSafe']
