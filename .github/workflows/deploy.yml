@@ -38,6 +38,9 @@ jobs:
         run: |
           $IMAGE_NAME="ghcr.io/global-value-web/whatsappfor18release_app:latest"
           docker pull $IMAGE_NAME
-          docker stop whatsappfor18release_app || echo "No container to stop"
-          docker rm whatsappfor18release_app || echo "No container to remove"
+          # Stop container if it exists
+          if (docker ps -a -q -f name=whatsappfor18release_app) {
+             docker stop whatsappfor18release_app
+             docker rm whatsappfor18release_app
+          }
           docker run -d --restart=always -p 8000:8000 --name whatsappfor18release_app $IMAGE_NAME
