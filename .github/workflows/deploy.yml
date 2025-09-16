@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   build-and-deploy:
-    runs-on: [self-hosted, Windows, X64]   # 👈 use your runner
+    runs-on: [self-hosted, Windows, X64]   #  use your runner
 
     steps:
       - name: Checkout code
